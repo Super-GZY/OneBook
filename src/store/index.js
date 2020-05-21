@@ -5,10 +5,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    imgPrefix: 'http://statics.zhuishushenqi.com',
+    loading: false,
+    isRead: false
   },
   mutations: {
+    changeLoading(state, load) {
+      state.loading = load;
+    },
+    changeRead(state, load) {
+      state.isRead = load;
+    }
   },
   actions: {
+
   },
   modules: {
   }
