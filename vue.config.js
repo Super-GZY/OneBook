@@ -15,12 +15,12 @@ module.exports = {
                     '^/api': ''
                 }
             },
-            '/chapter': {
-                target: 'http://chapterup.zhuishushenqi.com/chapter/',
+            '/chapterApi': {
+                target: 'http://chapterup.zhuishushenqi.com',
                 ws: true,
                 changOrigin: true,
                 pathRewrite: {
-                    '^/chapter': ''
+                    '^/chapterApi': ''
                 }
             }
         },
