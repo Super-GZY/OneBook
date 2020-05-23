@@ -100,6 +100,7 @@
                 is-link
                 :value="bookDetail.lastChapter"
                 value-class="hidden"
+                @click="$router.push({path:'/content',query:{id:bookDetail._id,isCate:true}})"
               />
               <van-cell
                 :border="false"
@@ -169,6 +170,10 @@
               </van-cell>
             </van-cell-group>
           </div>
+          <van-tabbar v-model="active" route placeholder inactive-color="#f26552">
+            <van-tabbar-item style="color:grey;font-size:15px" @click="addBookshelves"><span>{{isAdd?'已在书架':'加入书架'}}</span></van-tabbar-item>
+            <van-tabbar-item :to="{path:'/content',query:{id:bookDetail._id}}" style="background-color:#f26552;color:#fff;font-size:15px">立即阅读</van-tabbar-item>
+          </van-tabbar>
         </div>
       </template>
     </template>
@@ -179,7 +184,13 @@
 import Nav from "../../components/Nav";
 export default {
   created() {
-    this.$store.commit("changeRead", false);
+      let books = JSON.parse(localStorage.getItem("OneBook_BookShelves"));
+    books.map(item => {
+      if (item.id ==  this.$route.query.id) {
+        this.isAdd = true;
+      }
+    });
+    this.$store.commit("changeRead", true);
     this.$iHttp.get("/api/book/" + this.$route.query.id).then(res => {
       res.data.wordCount = this.changeUnit(res.data.wordCount);
       res.data.latelyFollower = this.changeUnit(res.data.latelyFollower);
@@ -211,6 +222,7 @@ export default {
   },
   data() {
     return {
+      active: "",
       title: "详情",
       path: "/selected",
       bookDetail: {},
@@ -221,7 +233,8 @@ export default {
       recommend: [],
       randomRecommend: [],
       activeNames: ["1"],
-      dz: "good-job-o"
+      dz: "good-job-o",
+      isAdd:false
     };
   },
   methods: {
@@ -250,7 +263,24 @@ export default {
         this.bookComment.reviews[idx].dz = "good-job-o";
         this.bookComment.reviews[idx].likeCount -= 1;
       }
-    }
+    },
+     addBookshelves() {
+      if (!this.isAdd) {
+        this.$iHttp.get("/api/book/" + this.$route.query.id).then(res => {
+          let books = JSON.parse(localStorage.getItem("OneBook_BookShelves"));
+          let bookObj = {
+            id: this.$route.query.id,
+            name: res.data.title,
+            author: res.data.author,
+            cover: res.data.cover,
+            date: Date()
+          };
+          books.unshift(bookObj);
+          localStorage.setItem("OneBook_BookShelves", JSON.stringify(books));
+          this.isAdd = true;
+        });
+      }
+    },
   },
   components: {
     Nav
@@ -307,9 +337,7 @@ export default {
           .author {
             color: goldenrod;
           }
-          .type {
-            // color: grey;
-          }
+
           .rating {
             display: flex;
             align-items: flex-end;

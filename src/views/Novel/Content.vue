@@ -28,7 +28,11 @@
         </div>
       </template>
       <template v-else>
-        <div class="noVip" @click="changeStatus" :style="{backgroundColor:currentColor}">
+        <div
+          class="noVip"
+          @click="changeStatus"
+          :style="{backgroundColor:currentColor,height:screenHeight+'px'}"
+        >
           <div class="content">VIP</div>
         </div>
       </template>
@@ -137,6 +141,7 @@
 import axios from "axios";
 export default {
   created() {
+    this.screenHeight = window.screen.height * 0.81;
     this.$store.commit("changeRead", true);
     let id = this.$route.query.id;
 
@@ -183,12 +188,16 @@ export default {
           })
           .then(res => {
             this.bookContent = res.data;
+            let isCate = this.$route.query.isCate;
+            this.currentChapter = isCate ? res.data.chapters.length: 1;
             this.chapterContent.title = this.bookContent.chapters[
-              this.currentChapter - 1
+              isCate ? res.data.chapters.length - 1 : 0
             ].title;
-            // console.log(res.data)
             this.$iHttp
-              .get("/chapterApi/chapter/" + res.data.chapters[0].link)
+              .get(
+                "/chapterApi/chapter/" +
+                  res.data.chapters[this.currentChapter-1].link
+              )
               .then(res => {
                 this.isVip = false;
                 this.chapterContent = res.data.chapter;
@@ -223,7 +232,8 @@ export default {
       currentColor: "#c4b395",
       currentSize: 15,
       currentChapter: 1,
-      isAdd: false
+      isAdd: false,
+      screenHeight: 0
     };
   },
   methods: {

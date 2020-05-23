@@ -5,6 +5,8 @@
 <script>
 export default {
   created() {
+    this.$store.commit("changeRead", true);
+
     this.$router.push({
       path: "detail",
       query: {

@@ -1,8 +1,9 @@
 <template>
   <div class="login" :style="{height:screenHeight+'px'}">
     <div class="content">
-      <h1>OneBook</h1>
-      <h2>登录</h2>
+      <!-- <h1>OneBook</h1> -->
+      <img src="../../assets/logo.png" style='width:2rem' alt="">
+      <!-- <h2>登录</h2> -->
       <div class="ipt">
         <van-form @submit="onSubmit">
           <van-field
@@ -21,7 +22,7 @@
         </van-form>
         <div class="btnGroup">
           <van-button class="btn" type="primary" @click="login">登录</van-button>
-          <van-button class="btn" type="warning" >注册</van-button>
+          <van-button class="btn" type="warning" @click="$router.push('register')">注册</van-button>
         </div>
       </div>
     </div>
@@ -32,7 +33,7 @@
 export default {
   name: "login",
   created() {
-    this.screenHeight = window.screen.height;
+    this.screenHeight = window.screen.height*0.81;
     this.$store.commit("changeRead", true);
   },
   data() {
@@ -71,7 +72,7 @@ export default {
     height: 60%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     h1 {
       font-weight: 300;

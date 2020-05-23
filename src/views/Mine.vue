@@ -17,8 +17,8 @@
     <van-cell-group>
       <van-cell icon="user-circle-o" title="我的账户" title-style="color:grey" is-link />
       <van-cell icon="browsing-history-o" title="阅读历史" title-style="color:grey" is-link />
-      <van-cell icon="setting-o" title="设置" title-style="color:grey" is-link />
-      <van-cell icon="smile-o" title="作者信息" title-style="color:grey" is-link />
+      <van-cell icon="smile-o" title="OneBook" title-style="color:grey" is-link />
+      <!-- <van-cell icon="setting-o" title="设置" title-style="color:grey" is-link /> -->
       <van-cell icon="info-o" title="版本" value="V 1.0.0" title-style="color:grey" />
     </van-cell-group>
     <div class="logOut">
@@ -28,12 +28,19 @@
         </div>
       </van-cell>
     </div>
+     <Footer v-if='!$store.state.isRead'/>
+
   </div>
 </template>
 
 <script>
+import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 export default {
+    created(){
+    this.$store.commit("changeRead", false);
+
+    },
   data() {
     return {
       title: "个人中心"
@@ -56,7 +63,8 @@ export default {
     }
   },
   components: {
-    Nav
+    Nav,
+    Footer
   }
 };
 </script>
@@ -84,8 +92,9 @@ export default {
     }
   }
   .logOut {
-    border-top: 10px solid #f6f7f9;
-    border-bottom: 10px solid #f6f7f9;
+    //   margin-top: 1rem;
+    border-top: 15px solid #f6f7f9;
+    border-bottom: 15px solid #f6f7f9;
     .btn {
       display: flex;
       justify-content: center;

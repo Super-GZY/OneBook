@@ -30,9 +30,9 @@ const routes = [
     },
   },
   {
-    path: '/find',
-    name: 'Find',
-    component: () => import('../views/Find'),
+    path: '/rank',
+    name: 'Rank',
+    component: () => import('../views/Rank'),
     meta: {
       needLogin: true
     },

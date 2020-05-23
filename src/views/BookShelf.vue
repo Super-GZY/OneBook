@@ -76,10 +76,13 @@
       image="https://img.yzcdn.cn/vant/custom-empty-image.png"
       description="没有这本书哦"
     />
+     <Footer v-if='!$store.state.isRead'/>
   </div>
 </template>
 
 <script>
+import Footer from "../components/Footer";
+
 export default {
   created() {
     this.$store.commit("changeRead", false);
@@ -159,6 +162,9 @@ export default {
         localStorage.getItem("OneBook_BookShelves")
       );
     }
+  },
+  components:{
+      Footer
   }
 };
 </script>

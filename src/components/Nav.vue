@@ -15,9 +15,9 @@
         <template #right v-if='!isBack && !isSimple'>
           <van-icon name="search" size="22" color="#fff" />
         </template>
-        <template #right v-if='!isSimple' >
+        <!-- <template #right v-if='!isSimple' >
           <van-icon :name="!isChange?'search':'plus'" size="22" color="#fff" />
-        </template>
+        </template> -->
          <!-- <template #right v-if='isMine' >
           <van-icon name="envelop-o" size="22" color="#fff" />
         </template> -->
@@ -81,6 +81,7 @@ export default {
   .van-nav-bar {
     // background-color: #ed414a;
     // background-color: #4fc08d;
+    // background-color: #ef8585;
     background-color: #f26552;
     // background: url('http://img3.imgtn.bdimg.com/it/u=196544027,499629478&fm=26&gp=0.jpg') no-repeat;
     // background-size: cover;

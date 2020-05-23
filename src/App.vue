@@ -1,17 +1,14 @@
 <template>
   <div id="app">
     <router-view />
-    <Footer v-if='!$store.state.isRead'/>
   </div>
 </template>
 <script>
-import Footer from "./components/Footer";
 export default {
   data() {
     return {};
   },
   components: {
-    Footer
   }
 };
 </script>

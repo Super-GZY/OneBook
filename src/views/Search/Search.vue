@@ -114,6 +114,8 @@
 <script>
 export default {
   created() {
+    this.$store.commit("changeRead", true);
+
     this.history = localStorage.getItem("HistoryWords")
       ? JSON.parse(localStorage.getItem("HistoryWords")).splice(0, 9)
       : [];

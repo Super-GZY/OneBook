@@ -56,6 +56,8 @@
 import Nav from '../../components/Nav'
 export default {
   created() {
+    this.$store.commit("changeRead", true);
+
     this.requestItem.major = this.$route.query.major;
     this.isFind = true;
     switch (this.$route.query.gender) {

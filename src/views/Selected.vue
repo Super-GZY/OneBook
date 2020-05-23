@@ -1,12 +1,7 @@
 <template>
   <div class="selected">
     <Nav :title="title" />
-    <!-- <van-tree-select height="191vw" :items="items" :main-active-index.sync="active">
-      <template #content>
-        <van-image v-if="active === 0" src="https://img.yzcdn.cn/vant/apple-1.jpg" />
-        <van-image v-if="active === 1" src="https://img.yzcdn.cn/vant/apple-2.jpg" />
-      </template>
-    </van-tree-select>-->
+    
     <van-loading
       size="1px"
       type="none"
@@ -33,16 +28,21 @@
         </van-grid-item>
       </van-grid>
     </div>
+     <Footer v-if='!$store.state.isRead'/>
+
   </div>
 </template>
 
 <script>
 import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 export default {
   created() {
     // this.$iHttp.get('/api/ranking/gender').then(res=>{
     //     console.log(res)
     // })
+    this.$store.commit("changeRead", false);
+
     this.$iHttp.get("/api/cats/lv2/statistics").then(res => {
       delete res.data.ok;
       let keyMap = {
@@ -61,13 +61,6 @@ export default {
   },
   data() {
     return {
-      active: 0,
-      items: [
-        { text: "分组 1" },
-        { text: "分组 2" },
-        { text: "分组 2" },
-        { text: "分组 2" }
-      ],
       sortItems: {},
       title: "精选"
     };
@@ -84,7 +77,8 @@ export default {
     }
   },
   components: {
-    Nav
+    Nav,
+    Footer
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="activity">
-    <Nav :title="title" :isSimple="true" :isMine="true" />
+    <Nav :title="title" :isSimple="true" :isMine="true" :isBack='true'/>
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="isFind">
       <van-list
         v-model="loading"
@@ -50,6 +50,8 @@
 import Nav from "../../components/Nav";
 export default {
   created() {
+    this.$store.commit("changeRead", true);
+
     this.title = this.$route.query.type;
     this.requestItem.gender = this.$route.query.gender;
     if(this.title == '一周最热'){
@@ -62,7 +64,6 @@ export default {
          this.requestItem.duration = 'all',
         this.requestItem.sort = 'collectorCount'
     }
-    console.log(this.requestItem)
     this.$iHttp.get("/api/book-list", this.requestItem).then(res => {
       this.booksList.content = res.data.bookLists;
       this.booksList.total = res.data.total;

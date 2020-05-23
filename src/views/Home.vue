@@ -75,15 +75,21 @@
         </van-tabs>
       </van-pull-refresh>
     </template>
+     <Footer v-if='!$store.state.isRead'/>
+
   </div>
 </template>
 
 <script>
 import { Toast, Lazyload } from "vant";
 import Nav from "../components/Nav";
+import Footer from "../components/Footer";
+
 export default {
   name: "Home",
   created() {
+    this.$store.commit("changeRead", false);
+
     //初始化书架推荐书籍
     if (!localStorage.getItem("OneBook_BookShelves")) {
       let books = [];
@@ -228,7 +234,8 @@ export default {
     }
   },
   components: {
-    Nav
+    Nav,
+    Footer
   }
 };
 </script>
