@@ -10,7 +10,7 @@
         src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2475846514,4080595965&fm=26&gp=0.jpg"
       />
       <div class="brief">
-        <span class="name">Morty</span>
+        <span class="name">{{username}}</span>
         <!-- <span class="name">Morty</span> -->
       </div>
     </div>
@@ -28,8 +28,7 @@
         </div>
       </van-cell>
     </div>
-     <Footer v-if='!$store.state.isRead'/>
-
+    <Footer v-if="!$store.state.isRead" />
   </div>
 </template>
 
@@ -37,13 +36,14 @@
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 export default {
-    created(){
+  created() {
     this.$store.commit("changeRead", false);
-
-    },
+    this.username = localStorage.getItem("OneBook_Usr");
+  },
   data() {
     return {
-      title: "个人中心"
+      title: "个人中心",
+      username: ""
     };
   },
   methods: {
@@ -51,11 +51,12 @@ export default {
       this.$dialog
         .confirm({
           message: "确定退出？",
-          closeOnPopstate:true
+          closeOnPopstate: true
         })
         .then(res => {
-            localStorage.setItem("OneBook_Login",false)
-          this.$router.push('/login')
+          localStorage.setItem("OneBook_Login", false);
+          localStorage.removeItem('OneBook_Usr')
+          this.$router.push("/login");
         })
         .catch(err => {
           console.log("fail");

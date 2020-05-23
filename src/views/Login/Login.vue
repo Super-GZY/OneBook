@@ -2,7 +2,7 @@
   <div class="login" :style="{height:screenHeight+'px'}">
     <div class="content">
       <!-- <h1>OneBook</h1> -->
-      <img src="../../assets/logo.png" style='width:2rem' alt="">
+      <img src="../../assets/logo.png" style="width:2rem" alt />
       <!-- <h2>登录</h2> -->
       <div class="ipt">
         <van-form @submit="onSubmit">
@@ -33,7 +33,7 @@
 export default {
   name: "login",
   created() {
-    this.screenHeight = window.screen.height*0.81;
+    this.screenHeight = window.screen.height * 0.81;
     this.$store.commit("changeRead", true);
   },
   data() {
@@ -45,15 +45,39 @@ export default {
   },
   methods: {
     login() {
-      if (this.username == "Morty" && this.password == 123) {
-        localStorage.setItem("OneBook_Login", true);
-        this.$router.push("/");
-        this.$store.commit("changeRead", false);
-      } else {
+      if (this.username == "" && this.password == "") {
         this.$dialog.alert({
-          message: "登录信息有误"
+          message: "用户名或密码不为空"
         });
+      } else {
+        this.$iHttp
+          .post("/log/login", {
+            username: this.username,
+            password: this.password
+          })
+          .then(res => {
+            if (res.data.code == 0) {
+              localStorage.setItem("OneBook_Usr", res.data.data.username);
+              localStorage.setItem("OneBook_Login", true);
+                this.$router.push("/");
+                this.$store.commit("changeRead", false);
+            } else {
+              this.$dialog.alert({
+                message: res.data.data
+              });
+            }
+          });
       }
+
+      // if (this.username == "Morty" && this.password == 123) {
+      //   localStorage.setItem("OneBook_Login", true);
+      //   this.$router.push("/");
+      //   this.$store.commit("changeRead", false);
+      // } else {
+      //   this.$dialog.alert({
+      //     message: "登录信息有误"
+      //   });
+      // }
     },
     onSubmit(values) {}
   },

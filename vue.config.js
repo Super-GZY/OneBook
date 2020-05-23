@@ -22,6 +22,14 @@ module.exports = {
                 pathRewrite: {
                     '^/chapterApi': ''
                 }
+            },
+            '/log': {
+                target: 'http://localhost:3000/api/',
+                ws: true,
+                changOrigin: true,
+                pathRewrite: {
+                    '^/log': ''
+                }
             }
         },
         before: app => { }

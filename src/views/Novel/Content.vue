@@ -173,7 +173,7 @@ export default {
         this.isAdd = true;
       }
     });
-
+   
     this.$iHttp
       .get("/api/btoc", {
         view: "summary",
@@ -189,14 +189,14 @@ export default {
           .then(res => {
             this.bookContent = res.data;
             let isCate = this.$route.query.isCate;
-            this.currentChapter = isCate ? res.data.chapters.length: 1;
+            this.currentChapter = isCate ? res.data.chapters.length : 1;
             this.chapterContent.title = this.bookContent.chapters[
               isCate ? res.data.chapters.length - 1 : 0
             ].title;
             this.$iHttp
               .get(
                 "/chapterApi/chapter/" +
-                  res.data.chapters[this.currentChapter-1].link
+                  res.data.chapters[this.currentChapter - 1].link
               )
               .then(res => {
                 this.isVip = false;

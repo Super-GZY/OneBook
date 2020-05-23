@@ -24,15 +24,15 @@
               clearable
               :rules="[{ required: true, message: '请填写密码'}]"
             />
-            <van-field
+            <!-- <van-field
               v-model="email"
               label="邮箱"
               placeholder="邮箱"
               required
               clearable
               :rules="[{ required: true, message: '请正确填写邮箱',pattern:/^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/}]"
-            />
-            <van-field
+            /> -->
+            <!-- <van-field
               v-model="code"
               center
               clearable
@@ -49,10 +49,10 @@
                   @click="veryfied"
                 >{{isAuth?auth_time:'发送验证码'}}</van-button>
               </template>
-            </van-field>
+            </van-field> -->
           </van-cell-group>
           <div class="btnGroup">
-            <van-button class="btn" type="warning" native-type="submit">注册</van-button>
+            <van-button class="btn" type="warning" @click="register">注册</van-button>
           </div>
         </van-form>
       </div>
@@ -73,28 +73,51 @@ export default {
       password: "",
       username: "",
       email: "",
-      code:'',
+      code: "",
       auth_time: 0,
-      isAuth: false,
+      isAuth: false
     };
   },
   methods: {
-    login() {
-      if (this.username == "Morty" && this.password == 123) {
-        localStorage.setItem("OneBook_Login", true);
-        this.$router.push("/");
-        this.$store.commit("changeRead", false);
-      } else {
+    register() {
+      // if (this.username == "Morty" && this.password == 123) {
+      //   localStorage.setItem("OneBook_Login", true);
+      //   this.$router.push("/");
+      //   this.$store.commit("changeRead", false);
+      // } else {
+      //   this.$dialog.alert({
+      //     message: "登录信息有误"
+      //   });
+      // }
+      if (this.username == "" && this.password == "") {
         this.$dialog.alert({
-          message: "登录信息有误"
+          message: "用户名或密码不为空"
         });
+      } else {
+        this.$iHttp
+          .post("/log/reguser", {
+            resusername: this.username,
+            rpassword: this.password
+          })
+          .then(res => {
+            if (res.data.code == 0) {
+              this.$dialog.alert({
+                message: res.data.message
+              }).then(res=>{
+              this.$router.push("/login");
+              });
+            } else {
+              this.$dialog.alert({
+                message: res.data.message
+              });
+            }
+          });
       }
     },
     veryfied() {
       this.verifiedTimer();
     },
     onSubmit(values) {
-      console.log(values);
     },
     verifiedTimer() {
       this.isAuth = true;
