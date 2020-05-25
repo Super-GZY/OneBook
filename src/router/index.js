@@ -111,6 +111,14 @@ const routes = [
     name: 'Register',
     component: () => import('../views/Login/Register')
   },
+  {
+    path: '/history',
+    name: 'History',
+    component: () => import('../views/History/History'),
+    meta: {
+      needLogin: true
+    }
+  }
 ]
 
 const router = new VueRouter({

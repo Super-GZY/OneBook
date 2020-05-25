@@ -9,6 +9,9 @@
         round
         src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2475846514,4080595965&fm=26&gp=0.jpg"
       />
+      <!-- <div class="avatar">
+        <span>{{username.slice(0,1)}}</span>
+      </div> -->
       <div class="brief">
         <span class="name">{{username}}</span>
         <!-- <span class="name">Morty</span> -->
@@ -16,7 +19,7 @@
     </div>
     <van-cell-group>
       <van-cell icon="user-circle-o" title="我的账户" title-style="color:grey" is-link />
-      <van-cell icon="browsing-history-o" title="阅读历史" title-style="color:grey" is-link />
+      <van-cell icon="browsing-history-o" title="阅读历史" title-style="color:grey" is-link @click="$router.push('/history')"/>
       <van-cell icon="smile-o" title="OneBook" title-style="color:grey" is-link />
       <!-- <van-cell icon="setting-o" title="设置" title-style="color:grey" is-link /> -->
       <van-cell icon="info-o" title="版本" value="V 1.0.0" title-style="color:grey" />
@@ -81,6 +84,15 @@ export default {
     justify-content: space-around;
     color: #f5f5f5;
     border-bottom: 7px solid #f6f7f9;
+    .avatar{
+      width: 0.6rem;
+      height: 0.6rem;
+      border: 2px solid orange;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 0.6rem;
+      font-size: 22px
+    }
     .brief {
       .name {
         font-size: 18px;

@@ -144,15 +144,50 @@ export default {
     this.screenHeight = window.screen.height * 0.81;
     this.$store.commit("changeRead", true);
     let id = this.$route.query.id;
-
-    if (!localStorage.getItem("Catalog")) {
-      let Cata = [
-        {
-          id: "初始化数据",
-          order: 1
+    //添加历史记录
+    if (!localStorage.getItem("OneBook_ReadList")) {
+      this.$iHttp.get("/api/book/" + id).then(res => {
+        let books = [];
+        let bookObj = {
+          id: this.$route.query.id,
+          name: res.data.title,
+          author: res.data.author,
+          cover: res.data.cover,
+          date: Date(),
+          longIntro:res.data.longIntro
+        };
+        books.unshift(bookObj);
+        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+      });
+    } else {
+      let books = JSON.parse(localStorage.getItem("OneBook_ReadList"));
+      let isExistence = false;
+      let idx = 0
+      books.map((item, index) => {
+        if (item.id == id) {
+          isExistence = true;
+          idx = index
         }
-      ];
-      localStorage.setItem("Catalog", JSON.stringify(Cata));
+      });
+      if (isExistence) {
+        books[idx].date =  Date();
+        books.unshift(books[idx]);
+        books.splice(idx + 1, 1);
+        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+      }else{
+        this.$iHttp.get("/api/book/" + id).then(res => {
+        let bookObj = {
+          id: this.$route.query.id,
+          name: res.data.title,
+          author: res.data.author,
+          cover: res.data.cover,
+          date: Date(),
+          longIntro:res.data.longIntro
+        };
+        books.unshift(bookObj);
+        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+      });
+      }
     }
     if (!localStorage.getItem("OneBook_Theme")) {
       let color = "#c4b395";
@@ -173,7 +208,7 @@ export default {
         this.isAdd = true;
       }
     });
-   
+
     this.$iHttp
       .get("/api/btoc", {
         view: "summary",
@@ -250,7 +285,9 @@ export default {
           this.$iHttp
             .get(
               "/chapterApi" +
-                this.bookContent.chapters[this.currentChapter - 1].link.slice(28)
+                this.bookContent.chapters[this.currentChapter - 1].link.slice(
+                  28
+                )
             )
             .then(res => {
               //   this.visible = false;
@@ -276,7 +313,9 @@ export default {
           this.$iHttp
             .get(
               "/chapterApi" +
-                this.bookContent.chapters[this.currentChapter - 1].link.slice(28)
+                this.bookContent.chapters[this.currentChapter - 1].link.slice(
+                  28
+                )
             )
             .then(res => {
               //   this.visible = false;

@@ -95,7 +95,7 @@ export default {
       let books = [];
       this.$iHttp.get("/api/book/59ba0dbb017336e411085a4e").then(res => {
         let bookObj1 = {
-          id: "59ba0dbb017336e411085a4e",
+          id: res.data._id,
           name: res.data.title,
           author: res.data.author,
           cover: res.data.cover,
@@ -104,7 +104,7 @@ export default {
         books.push(bookObj1);
         this.$iHttp.get("/api/book/550a8d84e3c0f94e375e4963").then(res => {
           let bookObj2 = {
-            id: "59ba0dbb017336e411085a4e",
+            id: res.data._id,
             name: res.data.title,
             author: res.data.author,
             cover: res.data.cover,
@@ -113,7 +113,7 @@ export default {
           books.push(bookObj2);
           this.$iHttp.get("/api/book/50975b961db679b876000029").then(res => {
             let bookObj3 = {
-              id: "50975b961db679b876000029",
+              id: res.data._id,
               name: res.data.title,
               author: res.data.author,
               cover: res.data.cover,
