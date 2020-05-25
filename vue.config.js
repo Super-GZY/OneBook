@@ -16,7 +16,7 @@ module.exports = {
                 }
             },
             '/chapterApi': {
-                target: 'http://chapterup.zhuishushenqi.com',
+                target: 'http://chapterup.zhuishushenqi.com/chapter/http://vip.zhuishushenqi.com/',
                 ws: true,
                 changOrigin: true,
                 pathRewrite: {

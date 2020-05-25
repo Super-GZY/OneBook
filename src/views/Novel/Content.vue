@@ -195,8 +195,8 @@ export default {
             ].title;
             this.$iHttp
               .get(
-                "/chapterApi/chapter/" +
-                  res.data.chapters[this.currentChapter - 1].link
+                "/chapterApi" +
+                  res.data.chapters[this.currentChapter - 1].link.slice(28)
               )
               .then(res => {
                 this.isVip = false;
@@ -249,8 +249,8 @@ export default {
           ].title;
           this.$iHttp
             .get(
-              "/chapterApi/chapter/" +
-                this.bookContent.chapters[this.currentChapter - 1].link
+              "/chapterApi" +
+                this.bookContent.chapters[this.currentChapter - 1].link.slice(28)
             )
             .then(res => {
               //   this.visible = false;
@@ -275,8 +275,8 @@ export default {
           ].title;
           this.$iHttp
             .get(
-              "/chapterApi/chapter/" +
-                this.bookContent.chapters[this.currentChapter - 1].link
+              "/chapterApi" +
+                this.bookContent.chapters[this.currentChapter - 1].link.slice(28)
             )
             .then(res => {
               //   this.visible = false;
@@ -298,7 +298,7 @@ export default {
     changeChapter(link, order) {
       this.chapterContent.title = this.bookContent.chapters[order - 1].title;
       this.$iHttp
-        .get("/chapterApi/chapter/" + link)
+        .get("/chapterApi" + link.slice(28))
         .then(res => {
           this.visible = false;
           this.isVip = false;
