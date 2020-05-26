@@ -241,6 +241,10 @@ export default {
                   this.bookContent.chapters[books[idx].index - 1].link,
                   books[idx].index
                 );
+                books[idx].date = Date();
+                books.unshift(books[idx]);
+                books.splice(idx + 1, 1);
+                localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
               })
               .catch(err => {
                 books[idx].index = 1;
@@ -249,6 +253,11 @@ export default {
                 books.splice(idx + 1, 1);
                 localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
               });
+          } else {
+            books[idx].date = Date();
+            books.unshift(books[idx]);
+            books.splice(idx + 1, 1);
+            localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
           }
         } else {
           books[idx].index = this.$route.query.chaptersCount;
