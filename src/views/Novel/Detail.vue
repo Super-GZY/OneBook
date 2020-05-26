@@ -100,7 +100,7 @@
                 is-link
                 :value="bookDetail.lastChapter"
                 value-class="hidden"
-                @click="$router.push({path:'/content',query:{id:bookDetail._id,isCate:true}})"
+                @click="$router.push({path:'/content',query:{id:bookDetail._id,isCate:true,chaptersCount:bookDetail.chaptersCount}})"
               />
               <van-cell
                 :border="false"

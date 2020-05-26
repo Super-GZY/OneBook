@@ -229,24 +229,34 @@ export default {
         }
       });
       if (isExistence) {
-        if (books[idx].index > 1) {
-          this.$dialog
-            .confirm({
-              message: "要回到上次阅读章节吗？",
-              closeOnPopstate: true
-            })
-            .then(res => {
-              this.changeChapter(
-                this.bookContent.chapters[books[idx].index - 1].link,
-                books[idx].index
-              );
-            })
-            .catch(err => {});
+        if (!this.$route.query.isCate) {
+          if (books[idx].index > 1) {
+            this.$dialog
+              .confirm({
+                message: "要回到上次阅读章节吗？",
+                closeOnPopstate: true
+              })
+              .then(res => {
+                this.changeChapter(
+                  this.bookContent.chapters[books[idx].index - 1].link,
+                  books[idx].index
+                );
+              })
+              .catch(err => {
+                books[idx].index = 1;
+                books[idx].date = Date();
+                books.unshift(books[idx]);
+                books.splice(idx + 1, 1);
+                localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+              });
+          }
+        } else {
+          books[idx].index = this.$route.query.chaptersCount;
+          books[idx].date = Date();
+          books.unshift(books[idx]);
+          books.splice(idx + 1, 1);
+          localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
         }
-        books[idx].date = Date();
-        books.unshift(books[idx]);
-        books.splice(idx + 1, 1);
-        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
       } else {
         this.$iHttp.get("/api/book/" + id).then(res => {
           let bookObj = {
