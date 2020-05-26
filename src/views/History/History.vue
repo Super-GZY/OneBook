@@ -13,7 +13,7 @@
           <div class="bookList">
             <img :src="$store.state.imgPrefix+item.cover" alt style="width:25%;height:1.2rem" />
             <div class="info">
-              <span class="title">{{item.name}}</span>
+              <span class="title">{{item.name}}<van-tag type="primary" style="float:right">第{{item.index}}章</van-tag></span>
               <p class="brief">{{item.longIntro}}</p>
               <div class="author">
                 <div class="name">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="tag">
                   <van-tag type="warning">{{item.date}}观看过</van-tag>
-                  <!-- <van-tag type="danger">{{item.latelyFollower}}人气</van-tag> -->
+                  <!-- <van-tag type="danger">上次看到第{{item.index}}章</van-tag> -->
                 </div>
               </div>
             </div>

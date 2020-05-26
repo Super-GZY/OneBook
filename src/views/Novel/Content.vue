@@ -144,51 +144,7 @@ export default {
     this.screenHeight = window.screen.height * 0.81;
     this.$store.commit("changeRead", true);
     let id = this.$route.query.id;
-    //添加历史记录
-    if (!localStorage.getItem("OneBook_ReadList")) {
-      this.$iHttp.get("/api/book/" + id).then(res => {
-        let books = [];
-        let bookObj = {
-          id: this.$route.query.id,
-          name: res.data.title,
-          author: res.data.author,
-          cover: res.data.cover,
-          date: Date(),
-          longIntro:res.data.longIntro
-        };
-        books.unshift(bookObj);
-        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
-      });
-    } else {
-      let books = JSON.parse(localStorage.getItem("OneBook_ReadList"));
-      let isExistence = false;
-      let idx = 0
-      books.map((item, index) => {
-        if (item.id == id) {
-          isExistence = true;
-          idx = index
-        }
-      });
-      if (isExistence) {
-        books[idx].date =  Date();
-        books.unshift(books[idx]);
-        books.splice(idx + 1, 1);
-        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
-      }else{
-        this.$iHttp.get("/api/book/" + id).then(res => {
-        let bookObj = {
-          id: this.$route.query.id,
-          name: res.data.title,
-          author: res.data.author,
-          cover: res.data.cover,
-          date: Date(),
-          longIntro:res.data.longIntro
-        };
-        books.unshift(bookObj);
-        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
-      });
-      }
-    }
+
     if (!localStorage.getItem("OneBook_Theme")) {
       let color = "#c4b395";
       localStorage.setItem("OneBook_Theme", color);
@@ -224,7 +180,7 @@ export default {
           .then(res => {
             this.bookContent = res.data;
             let isCate = this.$route.query.isCate;
-            this.currentChapter = isCate ? res.data.chapters.length : 1;
+            this.currentChapter = isCate ? res.data.chapters.length : 1; //是否定位到最后一个目录
             this.chapterContent.title = this.bookContent.chapters[
               isCate ? res.data.chapters.length - 1 : 0
             ].title;
@@ -246,6 +202,67 @@ export default {
               });
           });
       });
+    //添加历史记录
+    if (!localStorage.getItem("OneBook_ReadList")) {
+      this.$iHttp.get("/api/book/" + id).then(res => {
+        let books = [];
+        let bookObj = {
+          id: id,
+          name: res.data.title,
+          author: res.data.author,
+          cover: res.data.cover,
+          date: Date(),
+          longIntro: res.data.longIntro,
+          index: this.currentChapter
+        };
+        books.unshift(bookObj);
+        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+      });
+    } else {
+      let books = JSON.parse(localStorage.getItem("OneBook_ReadList"));
+      let isExistence = false;
+      let idx = 0;
+      books.map((item, index) => {
+        if (item.id == id) {
+          isExistence = true;
+          idx = index;
+        }
+      });
+      if (isExistence) {
+        if (books[idx].index > 1) {
+          this.$dialog
+            .confirm({
+              message: "要回到上次阅读章节吗？",
+              closeOnPopstate: true
+            })
+            .then(res => {
+              this.changeChapter(
+                this.bookContent.chapters[books[idx].index - 1].link,
+                books[idx].index
+              );
+            })
+            .catch(err => {});
+        }
+        books[idx].date = Date();
+        books.unshift(books[idx]);
+        books.splice(idx + 1, 1);
+        localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+      } else {
+        this.$iHttp.get("/api/book/" + id).then(res => {
+          let bookObj = {
+            id: id,
+            name: res.data.title,
+            author: res.data.author,
+            cover: res.data.cover,
+            date: Date(),
+            longIntro: res.data.longIntro,
+            index: this.currentChapter
+          };
+          books.unshift(bookObj);
+          localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+        });
+      }
+    }
   },
   data() {
     return {
@@ -282,6 +299,14 @@ export default {
           this.chapterContent.title = this.bookContent.chapters[
             this.currentChapter - 1
           ].title;
+          let books = JSON.parse(localStorage.getItem("OneBook_ReadList"));
+          books.map((item, index) => {
+            if (item.id == this.$route.query.id) {
+              item.index = this.currentChapter;
+            }
+          });
+          localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
+
           this.$iHttp
             .get(
               "/chapterApi" +
@@ -310,6 +335,13 @@ export default {
           this.chapterContent.title = this.bookContent.chapters[
             this.currentChapter - 1
           ].title;
+          let books = JSON.parse(localStorage.getItem("OneBook_ReadList"));
+          books.map((item, index) => {
+            if (item.id == this.$route.query.id) {
+              item.index = this.currentChapter;
+            }
+          });
+          localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
           this.$iHttp
             .get(
               "/chapterApi" +
@@ -335,6 +367,13 @@ export default {
       }
     },
     changeChapter(link, order) {
+      let books = JSON.parse(localStorage.getItem("OneBook_ReadList"));
+      books.map((item, index) => {
+        if (item.id == this.$route.query.id) {
+          item.index = order;
+        }
+      });
+      localStorage.setItem("OneBook_ReadList", JSON.stringify(books));
       this.chapterContent.title = this.bookContent.chapters[order - 1].title;
       this.$iHttp
         .get("/chapterApi" + link.slice(28))
