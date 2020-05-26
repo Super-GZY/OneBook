@@ -1,6 +1,7 @@
 <template>
   <div class="history">
     <Nav :title="title" :isSimple="true" :isMine="true" :isBack='true'/>
+    <van-button icon="brush-o" type="primary" style="position:fixed;top:50%;right:0;z-index:1;border:none;border-radius:50%;font-size:15px" color="#f26552" @click="clear"/>
     <van-list v-if="booksList.length !== 0">
       <van-cell-group>
         <van-cell
@@ -57,6 +58,13 @@ export default {
       booksList: [],
       title:'历史记录'
     };
+  },
+  methods:{
+    clear(){
+      localStorage.removeItem('OneBook_ReadList')
+      this.booksList = []
+      // this.$forceUpdate()
+    }
   },
   components: {
     Nav
