@@ -118,11 +118,19 @@ const routes = [
     meta: {
       needLogin: true
     }
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About/About'),
+    meta: {
+      needLogin: true
+    }
   }
 ]
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

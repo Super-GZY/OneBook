@@ -18,9 +18,9 @@
       </div>
     </div>
     <van-cell-group>
-      <van-cell icon="user-circle-o" title="我的账户" title-style="color:grey" is-link />
+      <!-- <van-cell icon="user-circle-o" title="我的账户" title-style="color:grey" is-link /> -->
       <van-cell icon="browsing-history-o" title="阅读历史" title-style="color:grey" is-link @click="$router.push('/history')"/>
-      <van-cell icon="smile-o" title="OneBook" title-style="color:grey" is-link />
+      <van-cell icon="smile-o" title="关于Onebook" title-style="color:grey" is-link @click="$router.push('/about')" />
       <!-- <van-cell icon="setting-o" title="设置" title-style="color:grey" is-link /> -->
       <van-cell icon="info-o" title="版本" value="V 1.0.0" title-style="color:grey" />
     </van-cell-group>
